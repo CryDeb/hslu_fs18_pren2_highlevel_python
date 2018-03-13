@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="809871b8-6e89-4ce5-bba0-5938018fcf11" name="StoreOnRaspberrypi" url="http://crydeb.internet-box.ch">
+        <fileTransfer host="crydeb.internet-box.ch" port="22" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
