@@ -3,9 +3,7 @@ import cv2
 #import time
 
 
-cap = cv2.VideoCapture("/home/dane/wayne.mp4")
-_, frame = cap.read()
-_, frame = cap.read()
+cap = cv2.VideoCapture("/home/dane/Downloads/20180308_092329.jpg")
 minSize = 60.0
 maxSize = 450000
 #time.sleep(3)

@@ -1,4 +1,10 @@
-from UartCommunication.UartCommunicatorDebug import UartCommunicatorDebug
+from TargetRecognizer.TargetRecognizerImp import TargetRecognizerImp
+import cv2
+from OpenCVWrapper.OpenCV import OpenCV
 
-myCom = UartCommunicatorDebug()
-myCom.drive_to_position(2)
+myTarget = TargetRecognizerImp()
+myTarget.is_target_in_reach()
+while(1):
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+#myTarget.is_target_in_reach()
