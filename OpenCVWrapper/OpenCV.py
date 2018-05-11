@@ -49,14 +49,19 @@ class OpenCV:
         self._image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         return self._image
 
-    def calculate_threshold(self, image=None, threshold_value=60, max_value=255, threshold_type=cv2.THRESH_BINARY):
+    def calculate_threshold(self, image=None, threshold_value=30, max_value=255, threshold_type=cv2.THRESH_BINARY):
         image = self._get_image(image)
         _, self._image = cv2.threshold(image, threshold_value, max_value, threshold_type)
         return self._image
 
     def calculate_level(self, image=None):
         image = self._get_image(image)
-        self._image = cv2.equalizeHist(image)
+        #self._image = cv2.equalizeHist(image)
+        return self._image
+
+    def gaussian_blur(self, image=None):
+        image = self._get_image(image)
+        self._image = cv2.GaussianBlur(image, (5, 3), 0)
         return self._image
 
     def find_contours(self, image=None):

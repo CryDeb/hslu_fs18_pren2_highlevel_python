@@ -11,20 +11,21 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
         UartObservable.__init__(self)
         if isinstance(serialPort, Serial):
             self._serialPort = serialPort
-            self._notification
+            self._run_deamon = True
+            self._thread_daemon = None
+            self._create_incoming_message_listener_thread
         else:
             raise ReferenceError("the passed argument is no instance of serial class")
 
     def drive_to_position(self, drive_distance_in_mm):
-
-        self._serialPort.write(self._to_byte(CommunicationCommands.DRIVE_FOR_SPECIFIC_DISTANCE))
-        self._serialPort.write(self._to_byte(drive_distance_in_mm))
+        self._serialPort.write(bytes([0b10011001]))
+        self._serialPort.write(bytes([100]))
 
     def drive_forward(self):
         self.drive_to_position(0)
 
     def stop_at_position(self, distance_until_stopped_in_mm):
-        self._serialPort.write(self._to_byte(CommunicationCommands.OPEN_CLAW))
+        self._serialPort.write(self._to_byte(CommunicationCommands.STOP_FOR_SPECIFIC_DISTANCE))
         self._serialPort.write(self._to_byte(distance_until_stopped_in_mm))
 
     def close_claw(self):
@@ -44,27 +45,33 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
         self._serialPort.write(self._to_byte(CommunicationCommands.ERROR))
 
     def _serial_incoming_message_listener(self):
-        while True:
+        while self._run_deamon:
             if isinstance(self._serialPort, Serial):
                 incoming_command = self._from_byte(self._serialPost.read(1))
                 if CommunicationCommands.has_command(incoming_command):
                     nmr_of_data = CommunicationCommands.command_addition_length(incoming_command)
-                    data = None
-                    if nmr_of_data == 1:
-                        data = self._from_byte(self._serialPort.read(1))
-                    elif nmr_of_data == 2:
-                        data = self._from_byte(self._serialPort.read(2))
+                    data = []
+                    for i in range(0, nmr_of_data):
+                        data.append(self._from_byte(self._serialPort.read(1)))
                     self.notify_all_observers(incoming_command, data)
                 else:
                     self.send_error()
 
     def _create_incoming_message_listener_thread(self):
-        thread_daemon = Thread(self._serial_incoming_message_listener())
-        thread_daemon.daemon = True
-        thread_daemon.start()
+        self._thread_daemon = Thread(self._serial_incoming_message_listener)
+        self._thread_daemon.daemon = True
+        self._thread_daemon.start()
+
+    def clean_up(self):
+        if self._thread_daemon != None:
+            self._run_deamon = False
+            self._thread_daemon.join()
 
     def _to_byte(self, number_to_parse):
-        return number_to_parse.to_bytes(1, 'big')
+        if isinstance(number_to_parse, int):
+            return number_to_parse.to_bytes(1, 'big')
+        else:
+            return (0).to_bytes(1, 'big')
 
     def _from_byte(self, bytes_to_parse):
         return int.from_bytes(bytes_to_parse, 'big')
