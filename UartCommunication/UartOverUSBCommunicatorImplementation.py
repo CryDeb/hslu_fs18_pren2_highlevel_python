@@ -19,7 +19,7 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
 
     def drive_to_position(self, drive_distance_in_mm):
         self._serialPort.write(bytes([0b10011001]))
-        self._serialPort.write(bytes([100]))
+        self._serialPort.write(bytes([drive_distance_in_mm]))
 
     def drive_forward(self):
         self.drive_to_position(0)
@@ -29,14 +29,14 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
         self._serialPort.write(self._to_byte(distance_until_stopped_in_mm))
 
     def close_claw(self):
-        self._serialPort.write(self._to_byte(CommunicationCommands.CLOSE_CLAW))
+        self._serialPort.write(bytes([0b00110011]))
 
     def open_claw(self):
-        self._serialPort.write(self._to_byte(CommunicationCommands.OPEN_CLAW))
+        self._serialPort.write(bytes([0b11010010]))
 
     def move_claw_to_position(self, distance_to_trolley_in_mm):
-        self._serialPort.write(self._to_byte(CommunicationCommands.MOVE_CLAW_TO_SPECIFIC_POSITION))
-        self._serialPort.write(self._to_byte(distance_to_trolley_in_mm))
+        self._serialPort.write(bytes([0b11001100]))
+        self._serialPort.write(bytes([distance_to_trolley_in_mm]))
 
     def move_claw_to_top(self):
         self._serialPort.write(self._to_byte(CommunicationCommands.MOVE_CLAW_TO_INITIAL_POSITION))

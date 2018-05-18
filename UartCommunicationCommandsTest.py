@@ -22,8 +22,11 @@ class UartCommunicationCommandsTest(UartObserver):
     def send_command4(self, distance):
         self._communicator.move_claw_to_position(distance)
 
-    def send_command4(self):
-        self._communicator.move_claw_to_top()
+    def send_command5(self):
+        self._communicator.close_claw()
+	
+    def send_command6(self):
+        self._communicator.open_claw()
 
     def cleanup(self):
         self._communicator.clean_up()
