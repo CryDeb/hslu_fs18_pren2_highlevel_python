@@ -15,8 +15,10 @@ class TargetRecognizerImp:
 
     def _target_recognize_algorithm(self, debug=False):
         if isinstance(self._open_cv, OpenCV):
-
-            self._open_cv.capture_picture('/home/dane/Downloads/20180308_092236.mp4')
+            if debug == True:
+                self._open_cv.capture_picture('/home/dane/Downloads/20180308_092236.mp4')
+            else:
+                self._open_cv.capture_picture(1)
             self._open_cv.convert_to_black_and_white()
 
             if debug:
@@ -25,9 +27,9 @@ class TargetRecognizerImp:
                 self._open_cv.resize_image(None, height/1.2, width/1.2)
 
             #make black and white
-            self._open_cv.calculate_level()
+            #self._open_cv.calculate_level()
             image = self._open_cv.calculate_threshold()
-
+            #self._open_cv.save_image(image=image)
             #countour calc
             self._open_cv.find_contours()
             approx_poly_dp = self._open_cv.get_all_approx_poly_dp()
@@ -54,16 +56,20 @@ class TargetRecognizerImp:
             for y in centerY:
                 if meanY*0.85<y<meanY*1.15:
                     finalY.append(y)
-            if count(finalX) == count(finalY) >= 5:
+            if count(finalX) == count(finalY) >= 4:
                 cv2.circle(image, (int(meanX), int(meanY)), 7, (120, 130, 120), -1)
+                self._open_cv.save_image(image=image)
                 print("TargetRecognized")
-            return image
-        return None
+                return True
+        return False
 
     def is_target_in_reach(self):
-        image = self._target_recognize_algorithm()
+        return self._target_recognize_algorithm()
+        #self._open_cv.save_image(image=image)
         if image is not None:
-            self._open_cv.show_image(image)
+            return False
+        else:
+            return True
 
     def calculate_distance_to_target(self):
         pass

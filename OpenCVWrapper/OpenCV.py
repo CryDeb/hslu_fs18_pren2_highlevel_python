@@ -1,5 +1,7 @@
 import cv2
-
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+import time
 
 class OpenCV:
 
@@ -8,8 +10,12 @@ class OpenCV:
         self._image = None
         self._contours = None
         self._min_size = 1000
-        self._max_size = 450000
-        pass
+        self._max_size = 550000
+        self._camera = PiCamera()
+        self._camera.resolution = (640, 480)
+        self._framerate = 15
+        self._rawCapture = PiRGBArray(self._camera, size=(640, 480))
+        time.sleep(0.1)
 
     def _get_image(self, image=None):
         if image is None:
@@ -22,10 +28,16 @@ class OpenCV:
     def capture_picture(self, video_device=0):
         if self._camera is None:
             self._camera = cv2.VideoCapture(video_device)
-        if not (self._camera.isOpened()):
-            return -1
-        status, self._image = self._camera.read()
-        if status:
+        #if not (self._camera.isOpened()):
+        #    return -1
+            status, self._image = self._camera.read()
+            if status:
+                return self._image
+        else:
+            self._rawCapture = PiRGBArray(self._camera, size=(640, 480))
+            self._camera.capture(self._rawCapture, format="bgr")
+            self._image = self._rawCapture.array
+            #self.save_image(image=self._image)
             return self._image
         return -1
 
@@ -49,7 +61,7 @@ class OpenCV:
         self._image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         return self._image
 
-    def calculate_threshold(self, image=None, threshold_value=30, max_value=255, threshold_type=cv2.THRESH_BINARY):
+    def calculate_threshold(self, image=None, threshold_value=60,  max_value=255, threshold_type=cv2.THRESH_BINARY):
         image = self._get_image(image)
         _, self._image = cv2.threshold(image, threshold_value, max_value, threshold_type)
         return self._image
@@ -102,3 +114,7 @@ class OpenCV:
     def show_image(self, image=None):
         image = self._get_image(image)
         cv2.imshow('Image', image)
+
+
+    def save_image(self, destination="Test.jpg", image=None):
+        cv2.imwrite(destination, image)
