@@ -19,7 +19,7 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
 
     def drive_to_position(self, drive_distance_in_mm):
         self._serialPort.write(bytes([0b10011001]))
-        self._serialPort.write(bytes([100]))
+        self._serialPort.write(bytes([drive_distance_in_mm]))
 
     def drive_forward(self):
         self.drive_to_position(0)
