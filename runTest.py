@@ -3,11 +3,14 @@ from serial import Serial
 
 import sys
 
+
+from TargetRecognizer.TargetRecognizerImp import TargetRecognizerImp
 from UartCommunicationCommandsTest import UartCommunicationCommandsTest
 
-port = Serial("COM5")
+port = Serial("/dev/ttyACM0")
 uart = UartCommunicationCommandsTest(port)
 port.timeout = 5
+target = TargetRecognizerImp()
 def signal_handler(signal, frame):
     uart.cleanup()
     print('You pressed Ctrl+C!')
@@ -34,4 +37,12 @@ while True:
         uart.send_command5()
     elif mode == 6:
         uart.send_command6()
-
+    elif mode == 7:
+        uart.send_command1(250)
+        #print(target.is_target_in_reach())
+        while target.is_target_in_reach() != True:
+            pass
+        uart.emergency_stop()
+        print("targetFound")
+    elif mode == 8:
+        uart.emergency_stop() 

@@ -28,6 +28,8 @@ class UartCommunicationCommandsTest(UartObserver):
     def send_command6(self):
         self._communicator.open_claw()
 
+    def emergency_stop(self):
+        self._communicator.emergency_stop()
     def cleanup(self):
         self._communicator.clean_up()
 

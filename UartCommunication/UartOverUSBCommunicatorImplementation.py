@@ -28,6 +28,9 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
         self._serialPort.write(self._to_byte(CommunicationCommands.STOP_FOR_SPECIFIC_DISTANCE))
         self._serialPort.write(self._to_byte(distance_until_stopped_in_mm))
 
+    def emergency_stop(self):
+        self._serialPort.write([0b01111000])
+
     def close_claw(self):
         self._serialPort.write(bytes([0b00110011]))
 
@@ -39,7 +42,8 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
         self._serialPort.write(bytes([distance_to_trolley_in_mm]))
 
     def move_claw_to_top(self):
-        self._serialPort.write(self._to_byte(CommunicationCommands.MOVE_CLAW_TO_INITIAL_POSITION))
+        self._serialPort.write(bytes([0b11001100]))
+        self._serialPort.write(bytes([0]))
 
     def send_error(self):
         self._serialPort.write(self._to_byte(CommunicationCommands.ERROR))
