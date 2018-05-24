@@ -9,13 +9,13 @@ class OpenCV:
         self._camera = None
         self._image = None
         self._contours = None
-        self._min_size = 1000
-        self._max_size = 550000
-        self._camera = PiCamera()
-        self._camera.resolution = (640, 480)
-        self._framerate = 15
-        self._rawCapture = PiRGBArray(self._camera, size=(640, 480))
-        time.sleep(0.1)
+        self._min_size = 100
+        self._max_size = 5500000
+        #self._camera = PiCamera()
+        #self._camera.resolution = (640, 480)
+        #self._framerate = 15
+        #self._rawCapture = PiRGBArray(self._camera, size=(640, 480))
+        #time.sleep(0.1)
 
     def _get_image(self, image=None):
         if image is None:
@@ -24,6 +24,10 @@ class OpenCV:
                     return self._image
             return self._image
         return image
+
+    def set_image(self, image):
+        if image is not None:
+            self._image = image
 
     def capture_picture(self, video_device=0):
         if self._camera is None:
@@ -114,6 +118,9 @@ class OpenCV:
     def show_image(self, image=None):
         image = self._get_image(image)
         cv2.imshow('Image', image)
+
+    def moments(self, approx_poly):
+        return cv2.moments(approx_poly)
 
 
     def save_image(self, destination="Test.jpg", image=None):
