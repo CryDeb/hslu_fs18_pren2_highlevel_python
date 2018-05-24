@@ -3,7 +3,6 @@ from itertools import count
 from multiprocessing import Queue
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from time import sleep
-
 from numpy import median
 from picamera.array import PiRGBArray
 from picamera import PiCamera
