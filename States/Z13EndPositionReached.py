@@ -10,7 +10,7 @@ class Z13EndPositionReached(BaseState):
 
     def run(self):
         print("Z13 - End position reached")
-        self.communicator.drive_to_position(0)
+        self.communicator.emergency_stop()
 
     def next(self, input):
         if input == Input.stop_command_received:

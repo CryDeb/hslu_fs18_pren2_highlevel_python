@@ -17,12 +17,13 @@ from TrolleyController.ContactSwitchListener import ContactSwitchListener
 
 class Main(threading.Thread, UartObserver, ContactSwitchListener):
 
-    PORT = Serial("/dev/ttyACM1")
+    PORT = Serial("/dev/ttyACM0")
 
     stateMachine = None
     lock_stateMachine = threading.Lock()
     trolleyCommunicationServer = None
     controller_running = True
+    contact_switch_triggered = False
 
     def __init__(self):
         threading.Thread.__init__(self)
@@ -35,7 +36,7 @@ class Main(threading.Thread, UartObserver, ContactSwitchListener):
         self.trolleyCommunicationServer = TrolleyCommunicationServer(self)
         self.trolleyCommunicationServer.start()
 
-        self._contact_switch_recognizer = ContactSwitchRecognizer()
+        self._contact_switch_recognizer = ContactSwitchRecognizer(self)
         self._contact_switch_recognizer.start()
 
         self.stateMachine.next(Input.initialized)
@@ -72,15 +73,19 @@ class Main(threading.Thread, UartObserver, ContactSwitchListener):
         return None
 
     def notify_about_arrived_notification(self, command, data):
+        print(command, data)
 
         if command == CommunicationCommands.DESTINATION_REACHED:
             self.stateMachine.next(Input.destination_reached)
+        elif command == CommunicationCommands.HEIGHT_REACHED:
+            self.stateMachine.next(Input.clutch_destination_reached)
 
-        print(command, data)
 
     def on_contact_switch_on(self):
-        print("Contact Switch")
-        self.stateMachine.next(Input.stop_command_received)
+        if not self.contact_switch_triggered:
+            self.contact_switch_triggered = True
+            print("Contact Switch")
+            self.stateMachine.next(Input.stop_command_received)
 
 
 if __name__ == "__main__":

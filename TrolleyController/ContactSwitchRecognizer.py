@@ -21,7 +21,5 @@ class ContactSwitchRecognizer(threading.Thread):
             input_state = GPIO.input(self.GPIO_PIN)
             if input_state == False:
                 self._contact_switch_listener.on_contact_switch_on()
-                print("Pressed")
 
-            print("Sali")
             time.sleep(0.05)

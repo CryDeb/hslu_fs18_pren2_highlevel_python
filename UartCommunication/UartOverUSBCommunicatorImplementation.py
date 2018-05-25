@@ -22,7 +22,7 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
         self._serialPort.write(bytes([drive_distance_in_mm]))
 
     def drive_forward(self):
-        self.drive_to_position(0)
+        self.drive_to_position(255)
 
     def stop_at_position(self, distance_until_stopped_in_mm):
         self._serialPort.write(self._to_byte(CommunicationCommands.STOP_FOR_SPECIFIC_DISTANCE))

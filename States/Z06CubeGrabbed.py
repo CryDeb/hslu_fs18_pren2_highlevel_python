@@ -16,7 +16,7 @@ class Z06CubeGrabbed(BaseState):
     def next(self, input):
         if input == Input.stop_command_received:
             return Z00TrolleyStopped(self.communicator)
-        elif input == Input.clutch_ascended:
+        elif input == Input.clutch_destination_reached:
             return Z07ClutchAscendedWithCube(self.communicator)
 
         return None

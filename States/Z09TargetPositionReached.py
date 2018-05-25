@@ -7,7 +7,7 @@ from States.Z10ClutchDescendedWithCube import Z10ClutchDescendedWithCube
 
 class Z09TargetPositionReached(BaseState):
 
-    VERTICAL_DISTANCE_TO_TARGET = 10
+    VERTICAL_DISTANCE_TO_TARGET = 80
     state = State.TargetPositionReached
 
     def run(self):
@@ -17,7 +17,7 @@ class Z09TargetPositionReached(BaseState):
     def next(self, input):
         if input == Input.stop_command_received:
             return Z00TrolleyStopped(self.communicator)
-        elif input == Input.clutch_descended:
+        elif input == Input.clutch_destination_reached:
             return Z10ClutchDescendedWithCube(self.communicator)
 
         return None
