@@ -13,7 +13,7 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
             self._serialPort = serialPort
             self._run_deamon = True
             self._thread_daemon = None
-            self._create_incoming_message_listener_thread
+            self._create_incoming_message_listener_thread()
         else:
             raise ReferenceError("the passed argument is no instance of serial class")
 
@@ -51,7 +51,7 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
     def _serial_incoming_message_listener(self):
         while self._run_deamon:
             if isinstance(self._serialPort, Serial):
-                incoming_command = self._from_byte(self._serialPost.read(1))
+                incoming_command = self._from_byte(self._serialPort.read(1))
                 if CommunicationCommands.has_command(incoming_command):
                     nmr_of_data = CommunicationCommands.command_addition_length(incoming_command)
                     data = []

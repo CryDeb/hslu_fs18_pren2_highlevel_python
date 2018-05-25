@@ -22,10 +22,13 @@ class CommunicationCommands(Enum):
     def has_command(cls, value):
         return any(value == item.value for item in cls)
 
-    def command_addition_length(self, value):
-        if any(value == value == self.STOP_FOR_SPECIFIC_DISTANCE, value == self.DRIVE_FOR_SPECIFIC_DISTANCE, value == self.HEIGHT_REACHED, value == self.MOVE_CLAW_TO_INITIAL_POSITION, value == self.GET_VALUE, value == self.UNUSED):
+    @staticmethod
+    def command_addition_length(value):
+        if any(value == value == CommunicationCommands.STOP_FOR_SPECIFIC_DISTANCE, value == CommunicationCommands.DRIVE_FOR_SPECIFIC_DISTANCE,
+               value == CommunicationCommands.BACKWARDS_FOR_SPECIFIC_DISTANCE, value == CommunicationCommands.MOVE_CLAW_TO_INITIAL_POSITION,
+               value == CommunicationCommands.GET_VALUE, value == CommunicationCommands.ACKNOWLEGE):
             return 1
-        elif any(value == self.SET_VALUE, value == self.VALUE):
+        elif any(value == CommunicationCommands.SET_VALUE, value == CommunicationCommands.VALUE):
             return 2
         else:
             return 0
