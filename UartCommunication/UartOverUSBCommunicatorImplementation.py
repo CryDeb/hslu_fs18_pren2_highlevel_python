@@ -62,7 +62,7 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
                     self.send_error()
 
     def _create_incoming_message_listener_thread(self):
-        self._thread_daemon = Thread(self._serial_incoming_message_listener)
+        self._thread_daemon = Thread(target=self._serial_incoming_message_listener)
         self._thread_daemon.daemon = True
         self._thread_daemon.start()
 

@@ -43,17 +43,17 @@ class TargetRecognizerMultithreadedPoolImpl:
             moments = open_cv.moments(approx_poly)
             center_x.append(int(moments["m10"] / moments["m00"]))
             center_y.append(int(moments["m01"] / moments["m00"]))
-        mean_x = median(center_x)
-        mean_y = median(center_y)
-        final_xy = []
-        for x, y in zip(center_x, center_y):
-            if mean_x * 0.80 < x < mean_x * 1.3 and mean_y * 0.80 < y < mean_y * 1.3:
-                final_xy.append((x, y))
-        print(str(len(final_xy)))
-        if len(final_xy) >= 5:
-            x, y = zip(*final_xy)
-            queue.put_nowait(median(x), median(y))
-            return
+        if center_x:
+            mean_x = median(center_x)
+            mean_y = median(center_y)
+            final_xy = []
+            for x, y in zip(center_x, center_y):
+                if mean_x * 0.80 < x < mean_x * 1.3 and mean_y * 0.80 < y < mean_y * 1.3:
+                    final_xy.append((x, y))
+            if len(final_xy) >= 5:
+                x, y = zip(*final_xy)
+                queue.put((median(x), median(y)))
+                return
 
     def _get_image(self):
         return self._open_cv.capture_picture()

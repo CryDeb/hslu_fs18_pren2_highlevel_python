@@ -7,7 +7,7 @@ from States.Z04CubePositionReached import Z04CubePositionReached
 
 class Z03TrolleyStarted(BaseState):
 
-    HORIZONTAL_DISTANCE_TO_CUBE = 36
+    HORIZONTAL_DISTANCE_TO_CUBE = 37
     state = State.TrolleyStarted
 
     def run(self):
@@ -15,12 +15,9 @@ class Z03TrolleyStarted(BaseState):
         self.communicator.drive_to_position(self.HORIZONTAL_DISTANCE_TO_CUBE)
 
     def next(self, input):
-
-        return Z00TrolleyStopped(self.communicator)
-
         if input == Input.stop_command_received:
-            return Z00TrolleyStopped(self.communicator)
+            return Z00TrolleyStopped(self.communicator, self.uartObserver)
         elif input == Input.destination_reached:
-            return Z04CubePositionReached(self.communicator)
+            return Z04CubePositionReached(self.communicator, self.uartObserver)
 
         return None

@@ -24,11 +24,11 @@ class CommunicationCommands(Enum):
 
     @staticmethod
     def command_addition_length(value):
-        if any(value == value == CommunicationCommands.STOP_FOR_SPECIFIC_DISTANCE, value == CommunicationCommands.DRIVE_FOR_SPECIFIC_DISTANCE,
-               value == CommunicationCommands.BACKWARDS_FOR_SPECIFIC_DISTANCE, value == CommunicationCommands.MOVE_CLAW_TO_INITIAL_POSITION,
-               value == CommunicationCommands.GET_VALUE, value == CommunicationCommands.ACKNOWLEGE):
+        if value == CommunicationCommands.STOP_FOR_SPECIFIC_DISTANCE.value or value == CommunicationCommands.DRIVE_FOR_SPECIFIC_DISTANCE.value or \
+               value == CommunicationCommands.HEIGHT_REACHED.value or value == CommunicationCommands.MOVE_CLAW_TO_INITIAL_POSITION.value or \
+               value == CommunicationCommands.GET_VALUE.value or value == CommunicationCommands.UNUSED.value:
             return 1
-        elif any(value == CommunicationCommands.SET_VALUE, value == CommunicationCommands.VALUE):
+        elif value == CommunicationCommands.SET_VALUE.value or value == CommunicationCommands.VALUE.value:
             return 2
         else:
             return 0

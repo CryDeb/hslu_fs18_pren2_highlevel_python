@@ -2,9 +2,11 @@ class BaseState:
 
     state = None
     communicator = None
+    uartObserver = None
 
-    def __init__(self, communicator):
+    def __init__(self, communicator, uartObserver):
         self.communicator = communicator
+        self.uartObserver = uartObserver
 
     def get_state(self):
         return self.state

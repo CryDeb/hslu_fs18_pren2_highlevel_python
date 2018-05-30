@@ -8,7 +8,8 @@ class UartCommunicationCommandsTest(UartObserver):
         self._communicator.register_new_observer(self)
 
     def notify_about_arrived_notification(self, command, data):
-        print(command, data)
+        pass
+        #print(command, data)
 
     def send_command1(self, distance):
         self._communicator.drive_to_position(distance)

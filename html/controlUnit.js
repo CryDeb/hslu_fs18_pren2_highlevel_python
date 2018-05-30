@@ -23,9 +23,10 @@ class ControlUnit {
     
     run() {
         let self = this;
+        self.connector.request(self, 0, 0);
         self.running = setInterval(function(){ 
             self.connector.request(self ,0, -1);
-        }, 1000);
+        }, 50);
         if(this.stopRequest) {
             clearInterval(self.running);
         }

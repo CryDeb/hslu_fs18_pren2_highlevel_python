@@ -11,12 +11,12 @@ class Z07ClutchAscendedWithCube(BaseState):
 
     def run(self):
         print("Z07 - Clutch ascended with cube")
-        self.communicator.drive_forward(50)
+        self.communicator.drive_to_position(255)
 
     def next(self, input):
         if input == Input.stop_command_received:
-            return Z00TrolleyStopped(self.communicator)
+            return Z00TrolleyStopped(self.communicator, self.uartObserver)
         elif input == Input.target_recognized:
-            return Z08TargetRecognized(self.communicator)
+            return Z08TargetRecognized(self.communicator, self.uartObserver)
 
         return None

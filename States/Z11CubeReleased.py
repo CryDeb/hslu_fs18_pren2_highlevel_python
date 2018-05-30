@@ -15,8 +15,8 @@ class Z11CubeReleased(BaseState):
 
     def next(self, input):
         if input == Input.stop_command_received:
-            return Z00TrolleyStopped(self.communicator)
+            return Z00TrolleyStopped(self.communicator, self.uartObserver)
         elif input == Input.clutch_destination_reached:
-            return Z12ClutchAscended(self.communicator)
+            return Z12ClutchAscended(self.communicator, self.uartObserver)
 
         return None

@@ -11,12 +11,12 @@ class Z12ClutchAscended(BaseState):
 
     def run(self):
         print("Z12 - Clutch ascended")
-        self.communicator.drive_forward()
+        self.communicator.drive_to_position(255)
 
     def next(self, input):
         if input == Input.stop_command_received:
-            return Z00TrolleyStopped(self.communicator)
+            return Z00TrolleyStopped(self.communicator, self.uartObserver)
         elif input == Input.contact_switch_triggered:
-            return Z13EndPositionReached(self.communicator)
+            return Z13EndPositionReached(self.communicator, self.uartObserver)
 
         return None

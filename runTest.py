@@ -2,15 +2,11 @@ import signal
 from serial import Serial
 
 import sys
-
-
-from TargetRecognizer.TargetRecognizerImp import TargetRecognizerImp
 from UartCommunicationCommandsTest import UartCommunicationCommandsTest
-
 port = Serial("/dev/ttyACM0")
 uart = UartCommunicationCommandsTest(port)
 port.timeout = 5
-target = TargetRecognizerImp()
+#target = TargetRecognizerImp()
 def signal_handler(signal, frame):
     uart.cleanup()
     print('You pressed Ctrl+C!')

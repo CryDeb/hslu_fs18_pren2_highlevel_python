@@ -6,13 +6,15 @@ import sys
 from CommunicationServer.TrolleyCommunicationServer import TrolleyCommunicationServer
 from States.Input import Input
 from States.State import State
+from multiprocessing import Queue
 from States.Z01ControllerStarted import Z01ControllerStarted
 from UartCommunication.UartObserver import UartObserver
 from TrolleyController.TrolleyStateMachine import TrolleyStateMachine
 from UartCommunication.UartOverUSBCommunicatorImplementation import UartOverUSBCommunicatorImplementation
-from UartCommunication.CommunicationCommands import CommunicationCommands
 from TrolleyController.ContactSwitchRecognizer import ContactSwitchRecognizer
 from TrolleyController.ContactSwitchListener import ContactSwitchListener
+from UartCommunication.CommunicationCommands import CommunicationCommands
+from TargetRecognizer.TargetRecognizerMultithreadedPoolImpl import TargetRecognizerMultithreadedPoolImpl
 
 
 class Main(threading.Thread, UartObserver, ContactSwitchListener):
@@ -24,6 +26,9 @@ class Main(threading.Thread, UartObserver, ContactSwitchListener):
     trolleyCommunicationServer = None
     controller_running = True
     contact_switch_triggered = False
+    target_recognized_triggered = False
+    recognizer = None
+    queue = None
 
     def __init__(self):
         threading.Thread.__init__(self)
@@ -31,13 +36,18 @@ class Main(threading.Thread, UartObserver, ContactSwitchListener):
         self._communicator = UartOverUSBCommunicatorImplementation(self.PORT)
         self._communicator.register_new_observer(self)
 
-        self.stateMachine = TrolleyStateMachine(Z01ControllerStarted(self._communicator))
+        self.stateMachine = TrolleyStateMachine(Z01ControllerStarted(self._communicator, self))
 
         self.trolleyCommunicationServer = TrolleyCommunicationServer(self)
         self.trolleyCommunicationServer.start()
 
         self._contact_switch_recognizer = ContactSwitchRecognizer(self)
         self._contact_switch_recognizer.start()
+
+
+        self.queue = Queue()
+        self.recognizer = TargetRecognizerMultithreadedPoolImpl(queue = self.queue)
+        self.recognizer.start_read_image_loop()
 
         self.stateMachine.next(Input.initialized)
         self.start()
@@ -50,6 +60,12 @@ class Main(threading.Thread, UartObserver, ContactSwitchListener):
                 print("==================================")
                 print("Exit")
                 sys.exit(0)
+
+            if not self.queue.empty() and not self.target_recognized_triggered:
+                self.target_recognized_triggered = True
+                print("queue")
+                print(self.queue.get())
+                self.stateMachine.next(Input.target_recognized)
 
             time.sleep(0.1)
 
@@ -73,12 +89,22 @@ class Main(threading.Thread, UartObserver, ContactSwitchListener):
         return None
 
     def notify_about_arrived_notification(self, command, data):
-        print(command, data)
+        #print(command, data)
+        #print(command, CommunicationCommands.VALUE.value, command == CommunicationCommands.VALUE.value)
+        if command == CommunicationCommands.VALUE.value:
+            pass
+            #print("Value: " + str(data))
 
-        if command == CommunicationCommands.DESTINATION_REACHED:
+        if command == CommunicationCommands.DESTINATION_REACHED.value:
             self.stateMachine.next(Input.destination_reached)
-        elif command == CommunicationCommands.HEIGHT_REACHED:
+        elif command == CommunicationCommands.HEIGHT_REACHED.value:
             self.stateMachine.next(Input.clutch_destination_reached)
+        elif command == CommunicationCommands.CLOSE_CLAW.value:
+            self.stateMachine.next(Input.cube_grabbed)
+        elif command == CommunicationCommands.OPEN_CLAW.value:
+            self.stateMachine.next(Input.cube_released)
+
+
 
 
     def on_contact_switch_on(self):

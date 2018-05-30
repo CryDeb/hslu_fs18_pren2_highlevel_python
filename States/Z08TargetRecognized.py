@@ -7,7 +7,7 @@ from States.Z09TargetPositionReached import Z09TargetPositionReached
 
 class Z08TargetRecognized(BaseState):
 
-    HORIZONTAL_DISTANCE_TO_TARGET = 10
+    HORIZONTAL_DISTANCE_TO_TARGET = 2
     state = State.TargetRecognized
 
     def run(self):
@@ -16,8 +16,8 @@ class Z08TargetRecognized(BaseState):
 
     def next(self, input):
         if input == Input.stop_command_received:
-            return Z00TrolleyStopped(self.communicator)
+            return Z00TrolleyStopped(self.communicator, self.uartObserver)
         elif input == Input.destination_reached:
-            return Z09TargetPositionReached(self.communicator)
+            return Z09TargetPositionReached(self.communicator, self.uartObserver)
 
         return None

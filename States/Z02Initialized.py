@@ -14,8 +14,8 @@ class Z02Initialized(BaseState):
 
     def next(self, input):
         if input == Input.stop_command_received:
-            return Z00TrolleyStopped(self.communicator)
+            return Z00TrolleyStopped(self.communicator, self.uartObserver)
         elif input == Input.start_command_received:
-            return Z03TrolleyStarted(self.communicator)
+            return Z03TrolleyStarted(self.communicator, self.uartObserver)
 
         return None
