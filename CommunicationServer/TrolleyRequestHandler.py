@@ -40,12 +40,15 @@ class TrolleyRequestHandler(BaseHTTPRequestHandler):
     do_DELETE = do_GET
 
     def response_html(self):
-
+        print("get " + self.parsed_path.path)
         if os.path.isfile("html" + self.parsed_path.path):
 
             self.send_response(200)
 
+            read_with_utf8 = True
+
             extension = self.parsed_path.path.split(".")[-1].lower()
+            #print("extension: " + extension)
             if extension == "html":
                 self.send_header("Content-type", "text/html; charset=utf-8")
             elif extension == "css":
@@ -54,24 +57,45 @@ class TrolleyRequestHandler(BaseHTTPRequestHandler):
                 self.send_header("Content-type", "text/javascript; charset=utf-8")
 
             elif extension == "gif":
+                read_with_utf8 = False
                 self.send_header("Content-type", "image/gif")
             elif extension == "png":
+                read_with_utf8 = False
                 self.send_header("Content-type", "image/png")
             elif extension == "jpeg" or extension == "jpg":
+                read_with_utf8 = False
                 self.send_header("Content-type", "image/jpeg")
             elif extension == "bmp":
+                read_with_utf8 = False
                 self.send_header("Content-type", "image/bmp")
+            elif extension == "mp3":
+                self.send_header("Content-type", "audio/mpeg")
+            elif extension == "wav":
+                self.send_header("Content-type", "audio/wav")
 
             else:
+                print("else type")
+                read_with_utf8 = False
                 self.send_header("Content-type", "text/plain; charset=utf-8")
 
             self.end_headers()
 
-            html_file = open("html" + self.parsed_path.path)
-            self.wfile.write(html_file.read().encode("utf-8"))
-            html_file.close()
+            #print("read: " + str(self.parsed_path.path))
+            with open("html" + self.parsed_path.path, 'rb') as f:
+                contents = f.read()
+                self.wfile.write(contents)
+
+            #html_file = open("html" + self.parsed_path.path)
+            #if read_with_utf8:
+            #    print("read with utf-8")
+            #    self.wfile.write(html_file.read().encode("utf-8"))
+            #else:
+            #    self.wfile.write(html_file.read())
+            #    pass
+            #html_file.close()
 
         else:
+            print("not gettet")
             self.response_404()
             return
 

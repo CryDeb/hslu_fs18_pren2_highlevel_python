@@ -1,7 +1,7 @@
 
-class PrintableInterface {
+class InterfaceStateUser {
     constructor() {
-        if(this.print === undefined) {
+        if(this.setState === undefined) {
             throw new TypeError("Must override method");
         }
     }

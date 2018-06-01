@@ -1,16 +1,23 @@
-
+//zielmasten erreicht: stage clear
+//package picket up: power up
+//device stoppet ohne würfel abgesetz: mammamia
+//startsignal: herewego
+//parcour geschafft: theend
+//http://www.mariomayhem.com/downloads/sounds/
 class ControlUnit {
     constructor(host, generatePrinters) {
         this.currentIndex = 0;
         this.currentX = 0;
         this.currentY = 0;
         this.currentState = null;
+        this.currentMessage = null;
         this.stopRequest = false;
         this.lastResponse = "";
         this.connector = new Connector(host);
         this.stateUsers = [];
         this.coordinatesUsers = [];
         this.timePrinters = [];
+        this.registerStateUser(new Audioplayer());
         if(generatePrinters) {
             logPrinter = new LogPrinter();
             logPrinter.registrateModel(this);
@@ -89,12 +96,15 @@ class ControlUnit {
                 console.log("new coordinates: x="+item.x+", y="+item.y);
                 this.setCoordinates(item.x, item.y);
             }
-            //ToDo: what to do with message? Print in Log?
+            if(this.currentMessage !== item.message) {
+                this.currentMessage = item.message;
+                this.setMessage(item.message);
+            }
         }
     }
     
     setState(state) {
-        if(state > 0 && state < 8) {
+        if(state >= State["DEVICE_STARTED"] && state <= State["DEVICE_STOPPED"]) {
             this.state = state;
             this.stateUsers.forEach(function(item) {
                 item.setState(state);
@@ -108,6 +118,10 @@ class ControlUnit {
         });
     }
     
+    setMessage(message) {
+        //ToDo: implement
+    }
+    
     //could be realised this way or directly in printState
     setTime(time) {
         this.timePrinters.forEach(function(item) {
@@ -116,21 +130,21 @@ class ControlUnit {
     }
     
     registerStateUser(obj) {
-        if(obj instanceof StateUserInterface || obj instanceof StateAndCoordinatesUserInterface) {
+        if(obj instanceof InterfaceStateUser || obj instanceof InterfaceCoordinatesAndStateUser) {
             this.stateUsers.push(obj);
             console.log("New stateUser in controlUnit");
         }
     }
     
     registerCoordinatesUser(obj) {
-        if(obj instanceof CoordinatesUserInterface || obj instanceof StateAndCoordinatesUserInterface) {
+        if(obj instanceof InterfaceCoordinatesUser || obj instanceof InterfaceCoordinatesAndStateUser) {
             this.coordinatesUsers.push(obj);
             console.log("New positionUser in controlUnit");
         }
     }
     
     registerTimePrinter(obj) {
-        if(obj instanceof TimePrinterInterface || obj instanceof StateAndCoordinatesUserAndTimePrinterInterface) {
+        if(obj instanceof InterfaceTimePrinter || obj instanceof InterfaceCoordinatesAndStateUserAndTimePrinter) {
             this.timePrinters.push(obj);
             console.log("New timePrinter in controlUnit");
         }

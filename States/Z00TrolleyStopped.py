@@ -8,6 +8,7 @@ class Z00TrolleyStopped(BaseState):
 
     def run(self):
         print("Z00 - Trolley stopped")
+        print("STOOOOOOP")
         self.communicator.emergency_stop()
 
     def next(self, input):

@@ -3,6 +3,7 @@ from States.State import State
 from States.Input import Input
 from States.Z00TrolleyStopped import Z00TrolleyStopped
 from States.Z03TrolleyStarted import Z03TrolleyStarted
+import time
 
 
 class Z02Initialized(BaseState):

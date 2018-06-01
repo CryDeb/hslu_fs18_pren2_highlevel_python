@@ -14,7 +14,7 @@ class Z10ClutchDescendedWithCube(BaseState):
     def run(self):
         print("Z10 - Clutch descended with cube")
         self.communicator.open_claw()
-        time.sleep(1)
+        time.sleep(0.5)
         self.uartObserver.notify_about_arrived_notification(CommunicationCommands.OPEN_CLAW.value, [])
 
     def next(self, input):

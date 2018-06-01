@@ -12,7 +12,13 @@ class Z08TargetRecognized(BaseState):
 
     def run(self):
         print("Z08 - Target recognized")
-        self.communicator.drive_to_position(self.HORIZONTAL_DISTANCE_TO_TARGET)
+        if self.params != None:
+            #self.communicator.drive_to_position(0)
+            print(self.params)
+            self.communicator.drive_to_position(int(self.params))
+        else:
+            self.communicator.drive_to_position(self.HORIZONTAL_DISTANCE_TO_TARGET)
+
 
     def next(self, input):
         if input == Input.stop_command_received:

@@ -1,5 +1,5 @@
 
-class Cube extends PrintableInterface {
+class Cube extends InterfacePrintable {
     constructor(width, height) {
         super();
         this.width = width;

@@ -29,3 +29,7 @@ class UartCommunicator(abc.ABC):
     def move_claw_to_top(self):
         pass
 
+    @abc.abstractmethod
+    def init_pull_up_claw(self):
+        pass
+

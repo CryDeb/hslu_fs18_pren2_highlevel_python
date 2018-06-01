@@ -1,25 +1,25 @@
 
-class LogPrinterModel extends StateAndCoordinatesUserInterface {
+class LogPrinterModel extends InterfaceCoordinatesAndStateUser {
     constructor() {
         super();
         this.stateChangeListeners = [];
-        this.positionChangeListeners = [];
+        this.coordinatesChangeListeners = [];
         this.state = State["START_REACHED"];
         this.x = 0;
         this.y = 0;
     }
     
     registerStateChangeListener(obj) {
-        if(obj instanceof StateChangeListener || obj instanceof PositionAndStateChangeListener) {
+        if(obj instanceof StateChangeListener || obj instanceof CoordinatesAndStateChangeListener) {
             this.stateChangeListeners.push(obj);
             console.log("New stateChangeListener in LogPrinterModel" + obj);
         }
     }
     
-    registerPositionChangeListener(obj) {
-        if(obj instanceof PositionChangeListener || obj instanceof PositionAndStateChangeListener) {
-            this.positionChangeListeners.push(obj);
-            console.log("New positionChangeListener in LogPrinterModel");
+    registerCoordinatesChangeListener(obj) {
+        if(obj instanceof CoordinatesChangeListener || obj instanceof CoordinatesAndStateChangeListener) {
+            this.coordinatesChangeListeners.push(obj);
+            console.log("New coordinatesChangeListener in LogPrinterModel");
         }
     }
     
@@ -36,9 +36,9 @@ class LogPrinterModel extends StateAndCoordinatesUserInterface {
         if(!isNaN(x) && !isNaN(y)) {
             this.x = x;
             this.y = y;
-            this.positionChangeListeners.forEach(function(item) {
-                console.log("logPrinterModel calls stateChanged");
-                item.positionChanged(x, y);
+            this.coordinatesChangeListeners.forEach(function(item) {
+                console.log("logPrinterModel calls coordinatesChanged");
+                item.coordinatesChanged(x, y);
             });
         }
     }

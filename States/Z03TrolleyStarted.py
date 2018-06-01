@@ -7,7 +7,7 @@ from States.Z04CubePositionReached import Z04CubePositionReached
 
 class Z03TrolleyStarted(BaseState):
 
-    HORIZONTAL_DISTANCE_TO_CUBE = 37
+    HORIZONTAL_DISTANCE_TO_CUBE = 40
     state = State.TrolleyStarted
 
     def run(self):

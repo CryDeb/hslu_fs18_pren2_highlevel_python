@@ -44,37 +44,37 @@ class StatePrinterView {
     }
     
     printDeviceStartet() {
-        this.ctx.fillStyle = "rgb(5, 87, 150)";
+        this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(50,65,20,20);
     }
     
     printPackagePickedUp() {
-        this.ctx.fillStyle = "rgb(5, 87, 150)";
+        this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(200,65,20,20);
     }
     
     printObstaclePassed() {
-        this.ctx.fillStyle = "rgb(5, 87, 150)";
+        this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(350,65,20,20);
     }
     
     printTargetDetected() {
-        this.ctx.fillStyle = "rgb(5, 87, 150)";
+        this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(500,65,20,20);
     }
     
     printTargetDropped() {
-        this.ctx.fillStyle = "rgb(5, 87, 150)";
+        this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(650,65,20,20);
     }
     
     printDestinationReached() {
-        this.ctx.fillStyle = "rgb(5, 87, 150)";
+        this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(800,65,20,20);
     }
     
     printDeviceStopped() {
-        this.ctx.fillStyle = "rgb(5, 87, 150)";
+        this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(950,65,20,20);
     }
 }

@@ -8,7 +8,7 @@ from States.Z05ClutchDescended import Z05ClutchDescended
 class Z04CubePositionReached(BaseState):
 
     #VERTICAL_DISTANCE_TO_CUBE = 57
-    VERTICAL_DISTANCE_TO_CUBE = 20
+    VERTICAL_DISTANCE_TO_CUBE = 40
     state = State.CubePositionReached
 
     def run(self):

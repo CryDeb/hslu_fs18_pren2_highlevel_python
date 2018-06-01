@@ -1,7 +1,7 @@
 
-class PositionAndStateChangeListener {
+class CoordinatesAndStateChangeListener {
     constructor() {
-        if(this.positionChanged === undefined) {
+        if(this.coordinatesChanged === undefined) {
             throw new TypeError("Must override method");
         }
         if(this.stateChanged === undefined) {

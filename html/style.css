@@ -1,3 +1,17 @@
+/*
+Colors:
+#0049A6 = rgb(0, 73, 166)
+#0059A6 = rgb(0, 89, 166)
+#F4E500 = rgb(244, 229, 0)
+#F50318 = rgb(245, 3, 24)
+#A8020E = rgb(168, 2, 13)
+*/
+
+html {
+    background: url("background.jpg") no-repeat center;
+    background-size: cover;
+}
+
 * {
     box-sizing: border-box;
     font-family: Verdana, sans-serif;
@@ -11,11 +25,11 @@ h1, h2 {
 }
 
 body {
-    background: rgb(143, 145, 148);
+    background: rgba(255, 255, 255, 0.3);
 }
 
 button {
-    background: rgb(5, 87, 150);
+    background: rgb(244, 229, 0);
     border: 1px solid rgb(0, 0, 0);
     border-radius: 5px;
     color: rgb(255, 255, 255);
@@ -28,15 +42,15 @@ button {
 }
 
 button:hover {
-    background: rgb(143, 145, 148);
-    border-color: rgb(5, 87, 150);
+    background: rgb(0, 89, 166);
+    border-color: rgb(0, 73, 166);
     cursor: pointer;
     -webkit-transition: background 1s; /* Safari */
     transition: background 1s;
 }
 
 #pagetitle {
-    border-bottom: 5px solid rgb(114, 129, 140);
+    border-bottom: 5px solid rgb(0, 89, 166);
     padding: 15px 0 0 0;
 }
 
@@ -86,7 +100,7 @@ button:hover {
 }
 
 #positionviewCanvas {
-    background: rgb(5, 87, 150);
+    background: rgba(168, 2, 13, 0.8);
     border: 1px solid rgb(0, 0, 0);
     box-shadow: 0px 5px 10px rgb(0, 0, 0);
     color: rgb(255, 255, 255);
@@ -100,7 +114,7 @@ button:hover {
 }
 
 #logEntries {
-    background: rgb(5, 87, 150);
+    background: rgba(168, 2, 13, 0.8);
     border: 1px solid rgb(0, 0, 0);
     box-shadow: 0px 5px 10px rgb(0, 0, 0);
     color: rgb(255, 255, 255);

@@ -1,7 +1,7 @@
 
-class PrintableInterface {
+class InterfaceTimePrinter {
     constructor() {
-        if(this.print === undefined) {
+        if(this.printTime === undefined) {
             throw new TypeError("Must override method");
         }
     }

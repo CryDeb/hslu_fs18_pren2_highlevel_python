@@ -1,5 +1,5 @@
 
-class StatePrinterModel extends StateUserInterface {
+class StatePrinterModel extends InterfaceStateUser {
     constructor() {
         super();
         this.state = State["DEVICE_STARTED"];
@@ -7,9 +7,9 @@ class StatePrinterModel extends StateUserInterface {
     }
     
     registerStateChangeListener(obj) {
-        if(obj instanceof StateChangeListener || obj instanceof PositionAndStateChangeListener) {
+        if(obj instanceof StateChangeListener || obj instanceof CoordinatesAndStateChangeListener) {
             this.stateChangeListeners.push(obj);
-            console.log("New stateChangeListener in StatePrinterModel" + obj);
+            console.log("New stateChangeListener in LogPrinterModel" + obj);
         }
     }
     

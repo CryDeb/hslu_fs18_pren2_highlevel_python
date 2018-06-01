@@ -13,7 +13,7 @@ class Z05ClutchDescended(BaseState):
     def run(self):
         print("Z05 - Clutch descended")
         self.communicator.close_claw()
-        time.sleep(1)
+        time.sleep(0.5)
         self.uartObserver.notify_about_arrived_notification(CommunicationCommands.CLOSE_CLAW.value, [])
 
     def next(self, input):

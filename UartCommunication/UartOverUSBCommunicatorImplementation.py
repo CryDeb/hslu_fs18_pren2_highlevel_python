@@ -3,11 +3,12 @@ from UartCommunication.UartCommunicator import UartCommunicator
 from UartCommunication.UartObservable import UartObservable
 from serial import Serial
 from threading import Thread
-
+import math
 
 class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
     def __init__(self, serialPort):
         super()
+        self.FIX_DISTANCE_TO_TROLLEY = 90
         UartObservable.__init__(self)
         if isinstance(serialPort, Serial):
             self._serialPort = serialPort
@@ -18,8 +19,8 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
             raise ReferenceError("the passed argument is no instance of serial class")
 
     def drive_to_position(self, drive_distance_in_mm):
-        self._serialPort.write(bytes([0b10011001]))
-        self._serialPort.write(bytes([drive_distance_in_mm]))
+        self._serialPort.write(([0b10011001]))
+        self._serialPort.write(([drive_distance_in_mm]))
 
     def drive_forward(self):
         self.drive_to_position(255)
@@ -32,18 +33,31 @@ class UartOverUSBCommunicatorImplementation(UartCommunicator, UartObservable):
         self._serialPort.write([0b01111000])
 
     def close_claw(self):
-        self._serialPort.write(bytes([0b00110011]))
+        self._serialPort.write(([0b00110011]))
 
     def open_claw(self):
-        self._serialPort.write(bytes([0b11010010]))
+        self._serialPort.write(([0b11010010]))
 
     def move_claw_to_position(self, distance_to_trolley_in_mm):
-        self._serialPort.write(bytes([0b11001100]))
-        self._serialPort.write(bytes([distance_to_trolley_in_mm]))
+        distance_to_trolley =int(3*(math.sqrt(distance_to_trolley_in_mm**2+180*distance_to_trolley_in_mm+37000)-math.sqrt(self.FIX_DISTANCE_TO_TROLLEY**2+28900)))
+        self._serialPort.write(([0b11001100]))
+        self._serialPort.write(([distance_to_trolley]))
 
     def move_claw_to_top(self):
-        self._serialPort.write(bytes([0b11001100]))
-        self._serialPort.write(bytes([0]))
+        self._serialPort.write(([0b11001100]))
+        self._serialPort.write(([10]))
+
+    def initialize_device(self):
+        self._serialPort.write([0b10101010, 0])
+
+    def init_pull_up_claw(self):
+        self._serialPort.write([0b10101010, 1])
+
+    def init_drive_back(self):
+        self._serialPort.write([0b10101010, 2])
+
+    def init_tof(self):
+        self._serialPort.write([0b10101010, 3])
 
     def send_error(self):
         self._serialPort.write(self._to_byte(CommunicationCommands.ERROR))

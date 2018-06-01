@@ -6,6 +6,7 @@ from time import sleep
 from numpy import median
 from picamera.array import PiRGBArray
 from picamera import PiCamera
+from multiprocessing import Process
 
 
 
@@ -48,7 +49,7 @@ class TargetRecognizerMultithreadedPoolImpl:
             mean_y = median(center_y)
             final_xy = []
             for x, y in zip(center_x, center_y):
-                if mean_x * 0.80 < x < mean_x * 1.3 and mean_y * 0.80 < y < mean_y * 1.3:
+                if mean_x * 0.8 < x < mean_x * 1.2 and mean_y * 0.8 < y < mean_y * 1.2:
                     final_xy.append((x, y))
             if len(final_xy) >= 5:
                 x, y = zip(*final_xy)
@@ -64,7 +65,7 @@ class TargetRecognizerMultithreadedPoolImpl:
     def _read_image_infinite_loop(self, stop_queue, pos_x_y_queue):
         camera = PiCamera()
         camera.resolution = (640, 480)
-        camera.framerate = 32
+        camera.framerate = 20
         rawCapture = PiRGBArray(camera, size=(640, 480))
         executor_pool = ThreadPoolExecutor(max_workers=25)
         sleep(1)
@@ -78,11 +79,10 @@ class TargetRecognizerMultithreadedPoolImpl:
         executor_pool.shutdown(5)
 
     def start_read_image_loop(self):
-        self._read_image_thread = threading.Thread(target=self._read_image_infinite_loop, args=(self._stop_queue, self._position_x_y_queue))
+        self._read_image_thread = Process(target=self._read_image_infinite_loop, args=(self._stop_queue, self._position_x_y_queue))
         self._read_image_thread.start()
 
     def stop_threads(self):
         self._stop_queue.put(True)
         if isinstance(self._read_image_thread, threading.Thread):
             self._read_image_thread.join()
-

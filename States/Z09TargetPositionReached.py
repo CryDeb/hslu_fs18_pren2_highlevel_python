@@ -12,7 +12,12 @@ class Z09TargetPositionReached(BaseState):
 
     def run(self):
         print("Z09 - Target position reached")
-        self.communicator.move_claw_to_position(self.VERTICAL_DISTANCE_TO_TARGET)
+        if self.params != None:
+            print("go to param: " + str(self.params))
+            self.communicator.move_claw_to_position(self.params*1.2)
+        else:
+            print("go to else: " + str(self.VERTICAL_DISTANCE_TO_TARGET))
+            self.communicator.move_claw_to_position(self.VERTICAL_DISTANCE_TO_TARGET)
 
     def next(self, input):
         if input == Input.stop_command_received:
