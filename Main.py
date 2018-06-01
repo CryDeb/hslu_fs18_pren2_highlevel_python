@@ -25,6 +25,10 @@ class Main(threading.Thread, UartObserver, ContactSwitchListener):
     DISTANCE_BETWEEN_CHASSIS_AND_CLUTCH = 15
     DISTANCE_BETWEEN_CENTER_AND_START = 22
 
+    MAGIC_CONSTANT = 1.6
+    ASCENT = 0.14142135623731
+    START_HEIGHT = 63.5
+
     TOF_FAILURE_THRESHOLD = 2
     SINA_DIV_SINB = 0.4663
     IMAGE_HALF_HEIGHT_IN_PIXEL = 480/2
@@ -169,10 +173,11 @@ class Main(threading.Thread, UartObserver, ContactSwitchListener):
         #print(command, CommunicationCommands.VALUE.value, command == CommunicationCommands.VALUE.value)
         if command == CommunicationCommands.VALUE.value:
             #print("Value: " + str(data))
-            value = (data[2] * 255 + data[1]) /10 * 1.6
+            value = (data[2] * 255 + data[1]) /10
             if data[0] == 2: # position x
                 if value > 0:
-                    self.position_x = self.DISTANCE_BETWEEN_CENTER_AND_START + value
+                    self.position_x = self.DISTANCE_BETWEEN_CENTER_AND_START + (value * MAGIC_CONSTANT)
+                    self.position_y = (self.position_x * ASCENT) + START_HEIGHT
             elif data[0] == 1: # position y (tof)
                 print("Toff: "+str(value))
                 if value > 0:
