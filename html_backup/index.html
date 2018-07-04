@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>PREN Webclient</title>
+        <link rel="stylesheet" href="style.css"/>
+        <script type="text/javascript" src="state.js"></script>
+        <script type="text/javascript" src="interfaceStateUser.js"></script>
+        <script type="text/javascript" src="interfaceCoordinatesUser.js"></script>
+        <script type="text/javascript" src="interfaceCoordinatesAndStateUser.js"></script>
+        <script type="text/javascript" src="interfaceTimePrinter.js"></script>
+        <script type="text/javascript" src="interfaceCoordinatesAndStateUserAndTimePrinter.js"></script>
+        <script type="text/javascript" src="stateChangeListener.js"></script>
+        <script type="text/javascript" src="coordinatesChangeListener.js"></script>
+        <script type="text/javascript" src="coordinatesAndStateChangeListener.js"></script>
+        <script type="text/javascript" src="audioplayer.js"></script>
+        <script type="text/javascript" src="stateprinter/statePrinterModel.js"></script>
+        <script type="text/javascript" src="stateprinter/statePrinterView.js"></script>
+        <script type="text/javascript" src="stateprinter/statePrinter.js"></script>
+        <script type="text/javascript" src="logprinter/logPrinterModel.js"></script>
+        <script type="text/javascript" src="logprinter/logPrinterView.js"></script>
+        <script type="text/javascript" src="logprinter/logPrinter.js"></script>
+        <script type="text/javascript" src="positionprinter/interfacePrintable.js"></script>
+        <script type="text/javascript" src="positionprinter/cube.js"></script>
+        <script type="text/javascript" src="positionprinter/positionPrinterModel.js"></script>
+        <script type="text/javascript" src="positionprinter/positionPrinterView.js"></script>
+        <script type="text/javascript" src="positionprinter/positionPrinter.js"></script>
+        <script type="text/javascript" src="connector.js"></script>
+        <script type="text/javascript" src="controlUnit.js"></script>
+    </head>
+    <body>
+        <audio id="audioMain" preload="auto">
+            <source src="soundfiles/main.mp3" />
+        </audio>
+        <audio id="audioItsMe" preload="auto">
+            <source src="soundfiles/mario-itsme.wav" />
+        </audio>
+        <audio id="audioHereWeGo" preload="auto">
+            <source src="soundfiles/mario-herewego.wav" />
+        </audio>
+        <audio id="audioPowerUp" preload="auto">
+            <source src="soundfiles/smb-powerup.wav" />
+        </audio>
+        <audio id="audioMamamia" preload="auto">
+            <source src="soundfiles/mario-mamamia.wav" />
+        </audio>
+        <audio id="audioTheEnd" preload="auto">
+            <source src="soundfiles/mario-theend.wav" />
+        </audio>
+        <div id="pagetitle">
+            <h1>Mission PREN T-30</h1>
+        </div>
+        <div id="stateview">
+            <canvas id="stateviewCanvas" width="1000" height="150">
+                
+            </canvas>
+        </div>
+        <div id="controlview">
+            <div class="buttonwrapper">
+                <button onclick="startTrolley()">Start</button>
+            </div>
+            <div class="buttonwrapper">
+                <button onclick="stopTrolley()">Stopp</button>
+            </div>
+        </div>
+        <div class="viewwrapper">
+            <div id="positionview">
+                <h2>Position</h2>
+                <canvas id="positionviewCanvas" width="700" height="450">
+                    
+                </canvas>
+            </div>
+            <div id="logview">
+                <h2>Log</h2>
+                <div id="logEntries">
+                    
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            //main
+            let cpu = new ControlUnit("http://192.168.43.148:8080",false);
+            let logprinter = new LogPrinter();
+            logprinter.registrateModel(cpu);
+            let statePrinter = new StatePrinter();
+            statePrinter.registrateModel(cpu);
+            let positionPrinter = new PositionPrinter();
+            positionPrinter.registrateModel(cpu);
+            let x = 0;
+            let y = 0;
+            let cState = "DEVICE_STARTED";
+            /*setInterval(function(){
+                cpu.parseResponse({"index":10, "history":[{"x":x,"y":y,"message":"Sali Joel","state":cState}]});
+                if(x>65) {
+                    cState = "PACKAGE_PICKED_UP";
+                }
+                if(x>80) {
+                    cState = "OBSTACLE_PASSED";
+                }
+                if(x>200) {
+                    cState = "TARGET_DETECTED";
+                }
+                if(x>280) {
+                    cState = "PACKAGE_DROPPED";
+                }
+                if(x>320) {
+                    cState = "DESTINATION_REACHED";
+                }
+                x = x+2;
+                y = y+1;
+            }, 500);*/
+            function startTrolley() {
+                cpu.startTrolley();
+            }
+            
+            function stopTrolley() {
+                cpu.stopTrolley();
+            }
+        </script>
+    </body>
+</html>

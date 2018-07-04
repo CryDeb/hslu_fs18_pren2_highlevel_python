@@ -5,14 +5,20 @@
         <title>PREN Webclient</title>
         <link rel="stylesheet" href="style.css"/>
         <script type="text/javascript" src="state.js"></script>
-        <script type="text/javascript" src="interfaceStateUser.js"></script>
         <script type="text/javascript" src="interfaceCoordinatesUser.js"></script>
+        <script type="text/javascript" src="interfaceMessageUser.js"></script>
+        <script type="text/javascript" src="interfaceStateUser.js"></script>
+        <script type="text/javascript" src="interfaceCoordinatesAndMessageUser.js"></script>
         <script type="text/javascript" src="interfaceCoordinatesAndStateUser.js"></script>
-        <script type="text/javascript" src="interfaceTimePrinter.js"></script>
-        <script type="text/javascript" src="interfaceCoordinatesAndStateUserAndTimePrinter.js"></script>
-        <script type="text/javascript" src="stateChangeListener.js"></script>
+        <script type="text/javascript" src="interfaceMessageAndStateUser.js"></script>
+        <script type="text/javascript" src="interfaceCoordinatesAndMessageAndStateUser.js"></script>
         <script type="text/javascript" src="coordinatesChangeListener.js"></script>
+        <script type="text/javascript" src="messageChangeListener.js"></script>
+        <script type="text/javascript" src="stateChangeListener.js"></script>
+        <script type="text/javascript" src="coordinatesAndMessageChangeListener.js"></script>
         <script type="text/javascript" src="coordinatesAndStateChangeListener.js"></script>
+        <script type="text/javascript" src="messageAndStateChangeListener.js"></script>
+        <script type="text/javascript" src="coordinatesAndMessageAndStateChangeListener.js"></script>
         <script type="text/javascript" src="audioplayer.js"></script>
         <script type="text/javascript" src="stateprinter/statePrinterModel.js"></script>
         <script type="text/javascript" src="stateprinter/statePrinterView.js"></script>
@@ -29,7 +35,7 @@
         <script type="text/javascript" src="controlUnit.js"></script>
     </head>
     <body>
-        <audio id="audioMain" preload="auto">
+<!--        <audio id="audioMain" preload="auto">
             <source src="soundfiles/main.mp3" />
         </audio>
         <audio id="audioItsMe" preload="auto">
@@ -47,8 +53,20 @@
         <audio id="audioTheEnd" preload="auto">
             <source src="soundfiles/mario-theend.wav" />
         </audio>
-        <div id="pagetitle">
-            <h1>Mission PREN T-30</h1>
+    -->    <div id="pagetitle">
+            <div class="part left">
+                <h2>Mario</h2>
+                <p id="coordinates">:</p>
+            </div>
+            <div class="part center">
+                <h2>World</h2>
+                <p>2-30</p>
+            </div>
+            <div class="part right">
+                <h2>Time</h2>
+                <p id="time">-</p>
+            </div>
+            
         </div>
         <div id="stateview">
             <canvas id="stateviewCanvas" width="1000" height="150">
@@ -79,36 +97,37 @@
         </div>
         <script type="text/javascript">
             //main
-            let cpu = new ControlUnit("http://192.168.43.148:8080",false);
+            let cpu = new ControlUnit("http://192.168.43.148:8080", false);
             let logprinter = new LogPrinter();
             logprinter.registrateModel(cpu);
             let statePrinter = new StatePrinter();
             statePrinter.registrateModel(cpu);
             let positionPrinter = new PositionPrinter();
             positionPrinter.registrateModel(cpu);
-            let x = 0;
-            let y = 0;
-            let cState = "DEVICE_STARTED";
-            /*setInterval(function(){
-                cpu.parseResponse({"index":10, "history":[{"x":x,"y":y,"message":"Sali Joel","state":cState}]});
-                if(x>65) {
-                    cState = "PACKAGE_PICKED_UP";
-                }
-                if(x>80) {
-                    cState = "OBSTACLE_PASSED";
-                }
-                if(x>200) {
-                    cState = "TARGET_DETECTED";
-                }
-                if(x>280) {
-                    cState = "PACKAGE_DROPPED";
-                }
-                if(x>320) {
-                    cState = "DESTINATION_REACHED";
-                }
-                x = x+2;
-                y = y+1;
-            }, 500);*/
+//            let x = 0;
+//            let y = 0;
+//            let cState = "DEVICE_STARTED";
+//            setInterval(function(){
+//                cpu.parseResponse({"index":10, "history":[{"x":x,"y":y,"message":"This is a testmessage","state":cState}]});
+//                if(x>65) {
+//                    cState = "PACKAGE_PICKED_UP";
+//                }
+//                if(x>80) {
+//                    cState = "OBSTACLE_PASSED";
+//                }
+//                if(x>200) {
+//                    cState = "TARGET_DETECTED";
+//                }
+//                if(x>280) {
+//                    cState = "PACKAGE_DROPPED";
+//                }
+//                if(x>320) {
+//                    cState = "DESTINATION_REACHED";
+//                }
+//                x = x+2.234562123123;
+//                y = y+1;
+//            }, 200);
+
             function startTrolley() {
                 cpu.startTrolley();
             }

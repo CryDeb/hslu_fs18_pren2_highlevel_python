@@ -25,3 +25,6 @@ class TrolleyCommunicationServer(threading.Thread):
     def log(self, log):
         self.log_list.add_log(log)
         #self.log_list.print_list()
+
+    def clear_logs(self):
+        self.log_list.clear_logs()

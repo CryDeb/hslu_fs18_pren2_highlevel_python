@@ -82,6 +82,8 @@ class Main(threading.Thread, UartObserver, ContactSwitchListener):
         self.stateMachine.start()
         #self.stateMachine.next(Input.initialized)
         self.start()
+        self.trolleyCommunicationServer.clear_logs()
+
 
     def run(self):
 
@@ -105,7 +107,7 @@ class Main(threading.Thread, UartObserver, ContactSwitchListener):
                     print("y: " + str(self.position_y) + " * " + str(self.SINA_DIV_SINB) + " *("+str(queue_val[1]) +"-"+str(self.IMAGE_HALF_HEIGHT_IN_PIXEL)+")/" + str(self.IMAGE_HALF_HEIGHT_IN_PIXEL))
                     distance_to_cam = (self.position_y * self.SINA_DIV_SINB * (self.IMAGE_HALF_HEIGHT_IN_PIXEL-queue_val[1])) / self.IMAGE_HALF_HEIGHT_IN_PIXEL
 
-                    self.drive_distance_to_target = int(self.DISTANCE_BETWEEN_CAM_AND_CENTER + distance_to_cam)
+                    self.drive_distance_to_target = int(self.DISTANCE_BETWEEN_CAM_AND_CENTER + distance_to_cam - 3)
                     if self.drive_distance_to_target < 0:
                         self.drive_distance_to_target = 0
                     print("DISTANCE: " + str(self.DISTANCE_BETWEEN_CAM_AND_CENTER) + " dis_to_cam: " + str(distance_to_cam) + " ")
@@ -120,6 +122,7 @@ class Main(threading.Thread, UartObserver, ContactSwitchListener):
     def on_start_command(self):
         self.lock_stateMachine.acquire()
         try:
+            self.trolleyCommunicationServer.clear_logs()
             self.stateMachine.next(Input.start_command_received)
         finally:
             self.lock_stateMachine.release()
@@ -176,8 +179,8 @@ class Main(threading.Thread, UartObserver, ContactSwitchListener):
             value = (data[2] * 255 + data[1]) /10
             if data[0] == 2: # position x
                 if value > 0:
-                    self.position_x = self.DISTANCE_BETWEEN_CENTER_AND_START + (value * MAGIC_CONSTANT)
-                    self.position_y = (self.position_x * ASCENT) + START_HEIGHT
+                    self.position_x = self.DISTANCE_BETWEEN_CENTER_AND_START + (value * self.MAGIC_CONSTANT)
+                    self.position_y = (self.position_x * self.ASCENT) + self.START_HEIGHT
             elif data[0] == 1: # position y (tof)
                 print("Toff: "+str(value))
                 if value > 0:

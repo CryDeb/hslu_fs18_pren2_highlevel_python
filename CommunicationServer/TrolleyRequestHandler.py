@@ -121,6 +121,7 @@ class TrolleyRequestHandler(BaseHTTPRequestHandler):
 
                 if "index" in self.parameters:
                     self.send_response(200)
+                    self.send_header('Access-Control-Allow-Origin', '*')
                     self.send_header("Content-type", "application/json; charset=utf-8")
                     self.end_headers()
 

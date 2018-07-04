@@ -1,5 +1,12 @@
-
+/**
+ * This class is a view class. It provides methods for printing the State in a canvas.
+ * @type StatePrinterView
+ */
 class StatePrinterView {
+    /**
+     * Creates a new instance of StatePrinterView.
+     * This method instantiates the state-line and sets the context.
+     */
     constructor() {
         this.canvas = document.getElementById("stateviewCanvas");
         this.ctx = this.canvas.getContext("2d");
@@ -35,44 +42,57 @@ class StatePrinterView {
         this.ctx.stroke();
     }
     
-    setStartState() {
-        
-    }
-    
-    setEndState() {
-        
-    }
-    
+    /**
+     * This method should be called, when the DEVICE_STARTED State is reached
+     */
     printDeviceStartet() {
         this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(50,65,20,20);
     }
     
+    /**
+     * This method should be called, when the PACKAGE_PICKED_UP State is reached
+     */
     printPackagePickedUp() {
         this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(200,65,20,20);
     }
     
+    /**
+     * This method should be called, when the OBSTACLE_PASSED State is reached
+     */
     printObstaclePassed() {
         this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(350,65,20,20);
     }
     
+    /**
+     * This method should be called, when the TARGET_DETECTED State is reached
+     */
     printTargetDetected() {
         this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(500,65,20,20);
     }
     
+    /**
+     * This method should be called, when the PACKAGE_DROPPED State is reached
+     */
     printTargetDropped() {
         this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(650,65,20,20);
     }
     
+    /**
+     * This method should be called, when the DESTINATION_REACHED State is reached
+     */
     printDestinationReached() {
         this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(800,65,20,20);
     }
     
+    /**
+     * This method should be called, when the DEVICE_STOPPED State is reached
+     */
     printDeviceStopped() {
         this.ctx.fillStyle = "rgb(245, 3, 24)";
         this.ctx.fillRect(950,65,20,20);

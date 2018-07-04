@@ -28,6 +28,13 @@ class LogList():
         finally:
             self.lock_log_list.release()
 
+    def clear_logs(self):
+        self.lock_log_list.acquire()
+        try:
+            self.log_list.clear()
+        finally:
+            self.lock_log_list.release()
+
     def print_list(self):
         print(self.log_list)
 

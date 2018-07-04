@@ -1,5 +1,13 @@
-
+/**
+ * This class is a controller class. It takes states and
+ * prints them in a stateView.
+ * @type StatePrinter
+ */
 class StatePrinter extends StateChangeListener {
+    /**
+     * Creates a new instance of StatePrinter
+     * @returns {StatePrinter}
+     */
     constructor() {
         super();
         this.view = new StatePrinterView();
@@ -7,10 +15,18 @@ class StatePrinter extends StateChangeListener {
         this.model.registerStateChangeListener(this);
     }
     
+    /**
+     * This method is used to registrate the model in a provider.
+     * @param {Object} provider : an object that provides new state
+     */
     registrateModel(provider) {
         provider.registerStateUser(this.model);
     }
     
+    /**
+     * This method is called, when the State of the model changes.
+     * @param {State} state
+     */
     stateChanged(state) {
         let currentState = typeof State[state] === "undefined" ? state : State[state];
         console.log("state bevor viewCall: "+currentState);

@@ -1,4 +1,8 @@
-
+/**
+ * This interface should be implemented by classes
+ * which are interested in state and coordinate changes, typically controllers.
+ * @type CoordinatesAndStateChangeListener
+ */
 class CoordinatesAndStateChangeListener {
     constructor() {
         if(this.coordinatesChanged === undefined) {

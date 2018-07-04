@@ -1,3 +1,8 @@
+/**
+ * This variable represents an enum. It contains the different
+ * states that are possibly sent by the server.
+ * @type State
+ */
 var State = {
     DEVICE_STARTED: 1,
     PACKAGE_PICKED_UP: 2,
